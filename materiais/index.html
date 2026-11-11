@@ -43,7 +43,7 @@ window.AEQ_LIVROS = {
 .pk .pk-top p b{color:#fff}
 
 /* cartões dos pacotes */
-.pk-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.pk-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
 .pk-card{display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,122,61,.35);border-radius:22px;padding:1.8rem;transition:transform .4s,border-color .4s,box-shadow .4s}
 .pk-card:hover{transform:translateY(-4px);border-color:rgba(255,122,61,.8);box-shadow:0 30px 60px -30px rgba(255,106,61,.5)}
 .pk-head{display:grid;grid-template-columns:130px 1fr;gap:1.4rem;align-items:center;margin-bottom:1.5rem}
@@ -107,6 +107,8 @@ window.AEQ_LIVROS = {
 .pk .pk-foot{margin-top:2.2rem!important;text-align:center;font-size:.94rem;opacity:.85}
 .pk-foot a{color:#ffb07a;font-weight:700}
 
+.pk-head{grid-template-columns:96px 1fr;gap:1.1rem}
+.pk .pk-card h3{font-size:clamp(1.4rem,1.8vw,1.65rem)!important;overflow-wrap:break-word}
 @media (max-width:1020px){.pk-cards{grid-template-columns:1fr}.pk-aula{grid-template-columns:1fr}.pk-steps{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.pk-head{grid-template-columns:80px 1fr;gap:.9rem}.pk .pk-card h3{font-size:1.45rem!important}.pk-call{font-size:.92rem}.pk-kicker{white-space:nowrap}.pk-card{padding:1.3rem}.pk-usos{grid-template-columns:1fr}.pk-steps{grid-template-columns:1fr}.pk-cmp th,.pk-cmp td{padding:.65rem .5rem;font-size:.8rem}.pk-kicker{font-size:.62rem;letter-spacing:.12em}.pk-aula-box{padding:.9rem}.pk-aula-ico{width:40px;height:40px}}
 
@@ -124,10 +126,10 @@ window.AEQ_LIVROS = {
 (function(){
   var ICO_AULA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>';
   var ARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  function aulaBox(){return '<div class="pk-aula-box"><div class="pk-aula-ico">'+ICO_AULA+'</div><div><small>Incluso no pacote</small><strong>Aula particular com o Mauro</strong><span>Auto-Teste Kinesiológico · online ou presencial</span></div></div>';}
+  function aulaBox(b){return '<div class="pk-aula-box"><div class="pk-aula-ico">'+ICO_AULA+'</div><div><small>Incluso no pacote</small><strong>Aula particular com o Mauro</strong><span>'+((b&&b.pacote&&b.pacote.aula)||'Auto-Teste Kinesiológico · online')+'</span></div></div>';}
   function extras(b){return '<ul class="pk-list">'+b.pacote.extras.map(function(t){return '<li><span>'+t+'</span></li>'}).join('')+'</ul>';}
   window.AEQ_pacoteBox=function(b){ if(!b.pacote) return '';
-    return '<div class="pk-incl">'+aulaBox()+'<p class="pk-also">E também</p>'+extras(b)+'</div>'; };
+    return '<div class="pk-incl">'+aulaBox(b)+'<p class="pk-also">E também</p>'+extras(b)+'</div>'; };
   window.AEQ_renderPacotes=function(el, lista, abrirDetalhes, linkCompra){
     var pk=lista.map(function(b,i){return {b:b,i:i}}).filter(function(x){return x.b.pacote});
     if(!pk.length){ el.style.display='none'; return; }
@@ -137,7 +139,7 @@ window.AEQ_LIVROS = {
           '<div class="pk-art"><img src="'+(b.livro3d||b.capa||'')+'" alt="E-book '+b.titulo+'"></div>'+
           '<div><span class="pk-tag">'+b.tema+'</span><h3>'+b.titulo+'</h3><p class="pk-call">'+b.pacote.chamada+'</p></div>'+
         '</div>'+
-        aulaBox()+
+        aulaBox(b)+
         '<p class="pk-also">E também</p>'+extras(b)+
         '<div class="pk-cta"><div class="pk-price">'+(b.preco?((b.precoDe?'<s>de '+b.precoDe+'</s>':'')+'<b>'+b.preco+'</b>'):'')+'</div>'+
           '<a class="pk-btn" href="'+linkCompra(b)+'" target="_blank" rel="noopener">Adquirir agora '+ARR+'</a>'+
@@ -149,14 +151,14 @@ window.AEQ_LIVROS = {
       '<div class="pk-top">'+
         '<span class="pk-kicker">'+ICO_AULA+'Exclusivo · Inclui aula com o Mauro</span>'+
         '<h2>Leia o livro e <em>aprenda com quem o escreveu.</em></h2>'+
-        '<p>Estes dois e-books são vendidos como <b>pacote completo</b>: além da leitura, você tem uma <b>aula particular com o próprio Mauro Alvisi</b> para aprender o Auto-Teste Kinesiológico, uma ferramenta que vai usar pelo resto da vida.</p>'+
+        '<p>Estes '+({2:'dois',3:'três',4:'quatro'}[pk.length]||pk.length)+' e-books são vendidos como <b>pacote completo</b>: além da leitura, você tem uma <b>aula particular com o próprio Mauro Alvisi</b> para aprender o Auto-Teste Kinesiológico, uma ferramenta que vai usar pelo resto da vida.</p>'+
       '</div>'+
       '<div class="pk-cards">'+cards+'</div>'+
       '<div class="pk-aula">'+
         '<div>'+
           '<p class="pk-mini">O que você aprende na aula</p>'+
           '<h3>Auto-Teste Kinesiológico</h3>'+
-          '<p class="pk-txt">Em uma aula personalizada, online ou presencial, o Mauro ensina você a <b>calibrar, testar e interpretar a resposta do seu corpo</b>, com precisão e segurança. É um jeito de fazer perguntas diretamente ao seu subconsciente e receber respostas claras em segundos. E serve para muito além do livro:</p>'+
+          '<p class="pk-txt">Em uma aula personalizada e online, o Mauro ensina você a <b>calibrar, testar e interpretar a resposta do seu corpo</b>, com precisão e segurança. É um jeito de fazer perguntas diretamente ao seu subconsciente e receber respostas claras em segundos. E serve para muito além do livro:</p>'+
           '<div class="pk-usos">'+
             '<span><i></i>Tomar decisões importantes</span>'+
             '<span><i></i>Identificar crenças limitantes</span>'+
@@ -179,9 +181,9 @@ window.AEQ_LIVROS = {
         '</div>'+
       '</div>'+
       '<div class="pk-steps">'+
-        '<div><b>Escolha o seu pacote</b>Prosperidade ou autoconhecimento: o tema que mais conversa com você.</div>'+
+        '<div><b>Escolha o seu pacote</b>O tema que mais conversa com o seu momento.</div>'+
         '<div><b>Comece a ler</b>O e-book chega na hora, para você ler no seu ritmo.</div>'+
-        '<div class="pk-hot"><b>Faça a aula com o Mauro</b>Online ou presencial, personalizada para você.</div>'+
+        '<div class="pk-hot"><b>Faça a aula com o Mauro</b>Online e personalizada para você.</div>'+
         '<div><b>Use para sempre</b>A ferramenta fica com você, com suporte durante o processo.</div>'+
       '</div>'+
       '<p class="pk-foot">Dúvidas? <a href="https://wa.me/558296211896?text='+encodeURIComponent('Olá, Mauro! Quero tirar uma dúvida sobre os pacotes com aula.')+'" target="_blank" rel="noopener">Fale com o Mauro no WhatsApp</a></p>'+
@@ -265,17 +267,6 @@ const BL_EBOOKS = [
     selo: "Inclui aula com o Mauro"
   },
   {
-    titulo: "Como Ter um Sistema Imunológico à Prova de Bala",
-    subtitulo: "Fortaleça suas defesas naturais com hábitos que cuidam de você",
-    tema: "Corpo",
-    descricao: "Um guia para fortalecer as defesas naturais do seu organismo com escolhas simples do dia a dia: alimentação, hábitos e equilíbrio entre corpo e mente.",
-    dentro: [],
-    preco: "",
-    link: "https://pay.kiwify.com.br/7jA7coz",
-    livro3d: AEQ_LIVROS.imuno,
-    status: "disponivel"
-  },
-  {
     titulo: "Peso Justo para Sempre",
     subtitulo: "O caminho definitivo para a sua transformação física e mental",
     tema: "Corpo",
@@ -288,6 +279,15 @@ const BL_EBOOKS = [
       "<b>Aliados Silenciosos:</b> como o descanso profundo da melatonina e uma respiração consciente devolvem a paz ao seu corpo"
     ],
     frase: "Chegou a hora de parar de brigar com o espelho e com a balança.",
+    pacote: {
+      chamada: "Descubra quais alimentos estão travando o seu peso.",
+      aula: "Teste muscular para identificar intolerâncias alimentares · online",
+      extras: [
+        "E-book completo, com acesso imediato",
+        "Aprenda a testar os alimentos e descobrir os que causam retenção e inflamação",
+        "Suporte durante o processo"
+      ]
+    },
     sinopse: [
       "Esqueça tudo o que já lhe disseram sobre emagrecer. Se você já cansou de dietas restritivas, do efeito sanfona e da eterna frustração de lutar contra a balança, este livro foi escrito para você. “O Peso Justo para Sempre” não é apenas mais um guia sobre o que colocar no prato; é um convite amoroso para decodificar o seu corpo e transformar a sua mente.",
       "Manter o peso justo nunca foi uma matemática simples de calorias ingeridas versus calorias gastas. O excesso de gordura é, na verdade, o reflexo visível de uma série de conversas silenciosas que acontecem dentro de você todos os dias: conversas que envolvem seus hormônios, suas emoções, sua rotina, seus pensamentos e suas crenças mais profundas.",
@@ -297,6 +297,18 @@ const BL_EBOOKS = [
     preco: "",
     link: "https://pay.kiwify.com.br/MYEqIiu",
     livro3d: AEQ_LIVROS.peso,
+    status: "disponivel",
+    selo: "Inclui aula com o Mauro"
+  },
+  {
+    titulo: "Como Ter um Sistema Imunológico à Prova de Bala",
+    subtitulo: "Fortaleça suas defesas naturais com hábitos que cuidam de você",
+    tema: "Corpo",
+    descricao: "Um guia para fortalecer as defesas naturais do seu organismo com escolhas simples do dia a dia: alimentação, hábitos e equilíbrio entre corpo e mente.",
+    dentro: [],
+    preco: "",
+    link: "https://pay.kiwify.com.br/7jA7coz",
+    livro3d: AEQ_LIVROS.imuno,
     status: "disponivel"
   },
   {
@@ -742,7 +754,7 @@ function cover(b){
 }
 function book(b){ return b.livro3d ? `<img class="mock" src="${b.livro3d}" alt="E-book ${b.titulo}">` : `<div class="book"><div class="cover">${cover(b)}</div><div class="pages"></div></div>`; }
 const avail = b => b.status !== "embreve";
-const lk = b => b.link || waLink(b.pacote ? 'Olá, Mauro! Quero adquirir o e-book "'+b.titulo+'" com a aula de Auto-Teste Kinesiológico.' : 'Olá, Mauro! Quero comprar o e-book "'+b.titulo+'".');
+const lk = b => b.link || waLink(b.pacote ? 'Olá, Mauro! Quero adquirir o e-book "'+b.titulo+'" com a aula particular.' : 'Olá, Mauro! Quero comprar o e-book "'+b.titulo+'".');
 const waLink = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
 
 /* estante do topo */
