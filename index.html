@@ -1928,6 +1928,18 @@ const BL_WHATSAPP = "558296211896";
 #pg-materiais .nav{position:fixed}
 #pg-materiais p,#pg-materiais h1,#pg-materiais h2,#pg-materiais h3,#pg-materiais ul{margin:0}
 html.pg-lock,html.pg-lock body{overflow:hidden}
+/* correção: janela de detalhes com rolagem em qualquer tela */
+#pg-materiais .modal,#bl-modal .bl-m{max-height:min(90vh,900px)!important;height:auto!important;grid-template-rows:minmax(0,1fr)!important}
+#pg-materiais .modal>*,#bl-modal .bl-m>*{min-height:0!important}
+#pg-materiais .m-body,#bl-modal .bl-m-body{overflow-y:auto!important;overscroll-behavior:contain;max-height:min(90vh,900px)}
+#pg-materiais .m-art,#bl-modal .bl-m-art{max-height:min(90vh,900px)}
+#pg-modal,#bl-modal{max-height:92vh}
+@media (max-width:760px){
+  #pg-materiais .modal,#bl-modal .bl-m{grid-template-rows:auto!important;overflow-y:auto!important}
+  #pg-materiais .m-body,#bl-modal .bl-m-body{max-height:none;overflow:visible!important}
+  #pg-materiais .m-art,#bl-modal .bl-m-art{max-height:none}
+}
+
 #pg-materiais .vidsec{padding:clamp(40px,6vw,80px) 0 clamp(60px,8vw,100px);background:linear-gradient(180deg,transparent,rgba(13,32,56,.6))}
 #pg-materiais .vid-head{text-align:center;margin-bottom:2rem}
 #pg-materiais .vid-head h2{font-size:clamp(2rem,4vw,3rem);margin-top:.8rem}
