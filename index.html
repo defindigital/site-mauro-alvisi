@@ -1356,6 +1356,18 @@ window.AEQ_LIVROS = {
 @media (max-width:1020px){.pk-cards{grid-template-columns:1fr}.pk-aula{grid-template-columns:1fr}.pk-steps{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.pk-head{grid-template-columns:80px 1fr;gap:.9rem}.pk .pk-card h3{font-size:1.45rem!important}.pk-call{font-size:.92rem}.pk-kicker{white-space:nowrap}.pk-card{padding:1.3rem}.pk-usos{grid-template-columns:1fr}.pk-steps{grid-template-columns:1fr}.pk-cmp th,.pk-cmp td{padding:.65rem .5rem;font-size:.8rem}.pk-kicker{font-size:.62rem;letter-spacing:.12em}.pk-aula-box{padding:.9rem}.pk-aula-ico{width:40px;height:40px}}
 
+
+/* bloco de destaque (gancho) nos detalhes */
+.gk{font-family:'Karla',system-ui,sans-serif;background:linear-gradient(160deg,#fff7ea,#f6ecd8);border:1px solid rgba(217,164,65,.45);border-left:4px solid #d9a441;border-radius:16px;padding:1.2rem 1.3rem;margin:.2rem 0 1.4rem}
+.gk p{margin:0}
+.gk-t{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:1.35rem;line-height:1.25;color:#152238}
+.gk-x{margin-top:.6rem!important;font-size:.96rem;line-height:1.6;color:#4f5d72}
+.gk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:1rem}
+.gk-box{background:#fff;border-radius:12px;padding:.85rem .8rem;text-align:center;box-shadow:0 6px 18px -10px rgba(21,34,56,.35);display:flex;flex-direction:column;gap:.25rem}
+.gk-ico{font-size:1.5rem;line-height:1}
+.gk-box b{font-size:.92rem;color:#152238}
+.gk-box span:last-child{font-size:.82rem;line-height:1.35;color:#4f5d72}
+@media (max-width:560px){.gk-row{grid-template-columns:1fr}.gk-box{display:grid;grid-template-columns:auto 1fr;column-gap:.7rem;row-gap:.15rem;align-items:center;text-align:left}.gk-box span:last-child{grid-column:2}}
 /* destaque dos pacotes na coleção e nos detalhes */
 .pk-gold-card{border-color:rgba(255,106,61,.75)!important;box-shadow:0 0 0 1px rgba(255,106,61,.35),0 24px 50px -28px rgba(255,106,61,.6)!important;background:linear-gradient(180deg,#1b3558,#10243f)!important}
 .pk-gold-card .bl-ribbon,.pk-gold-card .ribbon{background:var(--pk-hot-grad)!important;color:#fff!important;box-shadow:0 6px 16px -6px rgba(239,75,43,.8)}
@@ -1372,6 +1384,9 @@ window.AEQ_LIVROS = {
   var ARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   function aulaBox(b){return '<div class="pk-aula-box"><div class="pk-aula-ico">'+ICO_AULA+'</div><div><small>Incluso no pacote</small><strong>Aula particular com o Mauro</strong><span>'+((b&&b.pacote&&b.pacote.aula)||'Auto-Teste Kinesiológico · online')+'</span></div></div>';}
   function extras(b){return '<ul class="pk-list">'+b.pacote.extras.map(function(t){return '<li><span>'+t+'</span></li>'}).join('')+'</ul>';}
+  window.AEQ_ganchoBox=function(b){ var g=b.gancho; if(!g) return '';
+    var cx=(g.caixas||[]).map(function(c){return '<div class="gk-box"><span class="gk-ico">'+c.ico+'</span><b>'+c.t+'</b><span>'+c.d+'</span></div>'}).join('');
+    return '<div class="gk"><p class="gk-t">'+g.titulo+'</p><p class="gk-x">'+g.texto+'</p>'+(cx?'<div class="gk-row">'+cx+'</div>':'')+'</div>'; };
   window.AEQ_pacoteBox=function(b){ if(!b.pacote) return '';
     return '<div class="pk-incl">'+aulaBox(b)+'<p class="pk-also">E também</p>'+extras(b)+'</div>'; };
   window.AEQ_renderPacotes=function(el, lista, abrirDetalhes, linkCompra){
@@ -1480,6 +1495,7 @@ window.AEQ_LIVROS = {
    status   → "disponivel" ou "embreve"
    selo     → etiqueta do card (opcional), ex.: "Novo"
    frase    → frase de impacto do livro (opcional)
+   gancho   → bloco de destaque no topo dos detalhes: titulo, texto e caixas (opcional)
    sinopse  → parágrafos da sinopse completa (aparece em "Ver detalhes")
    pacote   → quando existe, o e-book vira PACOTE COMPLETO (e-book + aula com o Mauro):
               chamada = frase curta | extras = o que vem além da aula
@@ -1490,6 +1506,10 @@ const BL_EBOOKS = [
     titulo: "O Jogo Alquímico da Prosperidade",
     subtitulo: "O sócio oculto que te deixa sem dinheiro",
     tema: "Prosperidade",
+    gancho: {
+      titulo: "Quanto vale para você um instrumento capaz de identificar e reequilibrar as crenças que travam a entrada de dinheiro na sua vida?",
+      texto: "Existem inúmeros programas e crenças limitantes que podem estar por trás desse bloqueio, agindo ativamente contra você. Mas quais deles estão realmente ativos em você, agora, impedindo a sua prosperidade de fluir?"
+    },
     descricao: "Por que pessoas inteligentes e dedicadas continuam presas ao mesmo patamar financeiro, ano após ano? Mauro Alvisi revela o “sócio oculto” instalado no inconsciente: um termostato invisível que sabota a riqueza antes mesmo que ela se materialize.",
     dentro: [
       "<b>Os 4 vetos do sócio oculto:</b> o ver, o decidir, o agir e o guardar",
@@ -1500,7 +1520,7 @@ const BL_EBOOKS = [
       "<b>As 4 transmutações</b> do jogo alquímico"
     ],
     pacote: {
-      chamada: "Descubra o que trava a sua prosperidade.",
+      chamada: "Quanto vale para você um instrumento capaz de identificar e reequilibrar as crenças que travam a entrada de dinheiro na sua vida?",
       extras: [
         "E-book completo, com acesso imediato",
         "Uma ferramenta de autoconhecimento e decisão para a vida inteira",
@@ -1562,6 +1582,15 @@ const BL_EBOOKS = [
     titulo: "Peso Justo para Sempre",
     subtitulo: "O caminho definitivo para a sua transformação física e mental",
     tema: "Corpo",
+    gancho: {
+      titulo: "O Sabotador Silencioso: o que realmente impede você de emagrecer?",
+      texto: "Já tentou de tudo e o efeito é temporário? Descubra o “Ganho Secundário” e as expectativas invisíveis que fazem seu corpo reter peso como proteção emocional.",
+      caixas: [
+        { ico: "🧠", t: "Expectativas", d: "O desejo é seu ou imposto por outros?" },
+        { ico: "🛡️", t: "Ganho Secundário", d: "O peso como proteção emocional." },
+        { ico: "🔓", t: "Liberação", d: "Destrave o conflito invisível." }
+      ]
+    },
     descricao: "Se você já cansou de dietas restritivas, do efeito sanfona e da eterna luta contra a balança, este livro foi escrito para você. Mais do que um guia sobre o que colocar no prato, é um convite amoroso para decodificar o seu corpo e transformar a sua mente.",
     dentro: [
       "<b>A Engrenagem Invisível:</b> como os desequilíbrios hormonais e o ritmo do metabolismo ditam o sucesso da sua transformação",
@@ -1572,7 +1601,7 @@ const BL_EBOOKS = [
     ],
     frase: "Chegou a hora de parar de brigar com o espelho e com a balança.",
     pacote: {
-      chamada: "Descubra quais alimentos estão travando o seu peso.",
+      chamada: "O Sabotador Silencioso: o que realmente impede você de emagrecer?",
       aula: "Teste muscular para identificar intolerâncias alimentares · online",
       extras: [
         "E-book completo, com acesso imediato",
@@ -1688,6 +1717,7 @@ const BL_WHATSAPP = "558296211896";
       <div class="bl-m-body">
         <p class="bl-eyebrow">${b.tema}</p><h3>${b.titulo}</h3><p class="bl-sub">${b.subtitulo||''}</p>
         <div class="bl-meta"><span>E-book digital (PDF)</span>${b.paginas?`<span>${b.paginas}</span>`:''}<span>Acesso imediato</span></div>
+        ${AEQ_ganchoBox(b)}
         ${AEQ_pacoteBox(b)}
         <p class="bl-desc">${b.descricao}</p>
         ${b.dentro&&b.dentro.length?`<p style="font-weight:700;margin:0 0 .8rem">O que você vai encontrar</p><ul class="bl-inside">${b.dentro.map(i=>`<li><span>${i}</span></li>`).join('')}</ul>`:''}
@@ -1720,7 +1750,7 @@ const BL_WHATSAPP = "558296211896";
   --sans:'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --radius:18px;
 }
-#pg-materiais *{box-sizing:border-box;margin:0;padding:0}
+:where(#pg-materiais *){box-sizing:border-box;margin:0;padding:0}
 #pg-materiais{font-family:var(--sans);background:var(--deep);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #pg-materiais img{max-width:100%;display:block}
 #pg-materiais a{color:inherit}
@@ -2235,6 +2265,7 @@ function abrirModal(i){
       <h3>${b.titulo}</h3>
       <p class="sub">${b.subtitulo||''}</p>
       <div class="meta"><span>E-book digital (PDF)</span>${b.paginas?`<span>${b.paginas}</span>`:''}<span>Acesso imediato</span></div>
+      ${AEQ_ganchoBox(b)}
       ${AEQ_pacoteBox(b)}
       <p class="desc">${b.descricao}</p>
       ${b.dentro&&b.dentro.length?`<p style="font-weight:600;margin-bottom:.8rem">O que você vai encontrar</p><ul class="inside">${b.dentro.map(i=>`<li><span>${i}</span></li>`).join('')}</ul>`:''}
